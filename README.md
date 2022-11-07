@@ -1,3 +1,4 @@
-# python-xcom-ufo-savegame
+# RelaTable
+## A relational database -like table of rows.
 
-This will be a Python library for reading and writing *UFO: Enemy Unknown* (a.k.a *X-COM: UFO Defense*) save game files.
+Supports foreign key -style referencing to an another `RelaTable` or other containers.

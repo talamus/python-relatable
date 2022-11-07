@@ -18,12 +18,12 @@ class RelaTable(MutableSequence):
     ) -> None:
         """
         Create a new table.
+
         :param primary_key_column:
-            Name of the primary key column. (`None`: Use row index as the primary key.)
+            Name of the primary key column. (`None` = Use row index as the primary key.)
         :param foreign_keys:
             Dictionary of references from a local column value to an another Sequence.
-        :rows:
-            A list of rows to be inserted
+        :rows: An initial list of rows to be inserted.
         """
         self.primary_key_column = primary_key_column
         self.primary_key_to_index = dict()  # Primary key value -> self.__rows index
