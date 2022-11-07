@@ -1,0 +1,2 @@
+class RelaTable:
+    pass
