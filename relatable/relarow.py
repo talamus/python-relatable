@@ -71,6 +71,23 @@ class RelaRow(MutableMapping):
             f"Add or remove columns by directly manipulating the data object."
         )
 
+    def __repr__(self) -> str:
+        """A "true" representation of the row data."""
+        return str(self.__data)
+
+    def __raw(self) -> dict:
+        out = {}
+        for column in self.__data:
+            if isinstance(self[column], RelaRow):
+                out[column] = self[column].__raw()
+            else:
+                out[column] = self[column]
+        return out
+
+    def __str__(self, raw: bool = False) -> str | dict:
+        """Expanded representation of the row data."""
+        return str(self.__raw())
+
     def __len__(self) -> int:
         """Return the number of columns."""
         return len(self.__data)

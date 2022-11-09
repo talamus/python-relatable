@@ -15,13 +15,13 @@ class RelaTable(MutableSequence):
 
     primary_key_column: column_name | None
     primary_key_to_index: dict[Any, int]  # Primary key value -> self.__rows index
-    foreign_keys: dict[column_name, Sequence]
+    foreign_keys: dict[column_name, Container]
     __rows: list[RelaRow]
 
     def __init__(
         self,
         primary_key_column: column_name | None = None,
-        foreign_keys: dict[column_name, Sequence] = {},
+        foreign_keys: dict[column_name, Container] = {},
         rows: Sequence = [],
     ) -> None:
         """
@@ -81,6 +81,17 @@ class RelaTable(MutableSequence):
         """Iterator for the rows."""
         return iter(self.__rows)
 
+    def __repr__(self) -> str:
+        """A "true" string representation of the table rows."""
+        return repr(self.__rows)
+
+    def __str__(self) -> str:
+        """A string representation of table rows with all the foreign keys expanded."""
+        out = []
+        for row in self.__rows:
+            out.append(str(row))
+        return f"[{', '.join(out)}]"
+
     def __len__(self) -> int:
         """Number of rows in the table."""
         return len(self.__rows)
@@ -88,7 +99,7 @@ class RelaTable(MutableSequence):
     def insert(self, index: int, data: Any) -> None:
         """
         Add object to the table as a new row.
-        :index: List index position to insert the new row into.
+        :index:  List index position to insert the new row into.
         :data:  The actual data object to be added.
         """
         len_rows = len(self.__rows)

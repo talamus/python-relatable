@@ -2,9 +2,12 @@ from relatable import RelaTable
 
 
 def main():
-    colors = ["red", "blue", "green"]
+    """A simple example."""
 
-    users = RelaTable(
+    colors = ["red", "blue", "green"]
+    pet_names = {"dog": "Musti", "cat": "Mirri"}
+
+    persons = RelaTable(
         primary_key_column="id",
         foreign_keys={"color": colors},
         rows=[
@@ -12,30 +15,35 @@ def main():
             {"id": 456, "name": "Teppo", "color": 1},
         ],
     )
+    persons.insert(1, {"id": 789, "name": "Seppo", "color": 2})
 
-    users.insert(1, {"id": 789, "name": "Seppo", "color": 2})
+    pets = RelaTable(
+        # No primary key defined => index is used
+        foreign_keys={"name": pet_names, "owner": persons},
+        rows=[
+            {"name": "cat", "owner": 123},  # index 0
+            {"name": "dog", "owner": 456},  # index 1
+        ],
+    )
 
-    print("----------------")
-    print(users[456].data())
-    print(users.primary_key_to_index)
-    print("----------------")
+    print(persons)
+    # Prints out:
+    #   [{'id': 123, 'name': 'Jaakko', 'color': 'red'},
+    #    {'id': 789, 'name': 'Seppo', 'color': 'green'},
+    #    {'id': 456, 'name': 'Teppo', 'color': 'blue'}]
 
-    for user in users.rows():
-        print(user.data(), user.color, user.name)
-    print("----------------")
+    print(pets)
+    # Prints out:
+    #   [{'name': 'Mirri', 'owner': {'id': 123, 'name': 'Jaakko', 'color': 'red'}},
+    #    {'name': 'Musti', 'owner': {'id': 456, 'name': 'Teppo', 'color': 'blue'}}]
 
-    users[456].name = "Marjatta"
-    users[456].color = 0
+    print(persons[789].name)
+    # Prints out:
+    #   Seppo
 
-    for user in users.rows():
-        print(user.data(), user.color, user.name)
-    print("----------------")
-
-    users[456] = {"id": 999, "name": "Joonas", "color": 2}
-
-    for user in users.rows():
-        print(user.data(), user.color, user.name)
-    print("----------------")
+    print(pets[0].owner.name)
+    # Prints out:
+    #   Jaakko
 
 
 if __name__ == "__main__":
