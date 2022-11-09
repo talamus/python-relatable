@@ -1,0 +1,66 @@
+customers:
+- id: 100
+  first_name: Jaakko
+  last_name: Jaakkolainen
+  address: |-
+    Kehäkatu 12 A 5
+    15870 Hollola
+  country: Finland
+- id: 321
+  first_name: Pirkko
+  last_name: Jaakkolainen
+  address: |-
+    Kehäkatu 12 A 5
+    15870 Hollola
+  country: Finland
+- id: 999
+  first_name: Jack
+  last_name: Bauer
+  address: |-
+    935 Pennsylvania Avenue NW
+    Washington, DC 20535
+  country: United States
+
+products:
+- name: Sunglasses
+  code: 5-6574-2801
+  price: 19.50
+  vat: 20%
+- name: Glock 17
+  code: 9-7624-5276
+  price: 512.99
+  vat: 15%
+- name: Purse with a hidden compartment
+  code: 1-1864-3541
+  price: 199.00
+  vat: 20%
+- name: Knockout powder
+  code: 8-7635-2345
+  price: 85.50
+  vat: 10%
+- name: Bubble gum
+  code: 3-6534-4213
+  price: .59
+  vat: 15%
+
+orders:
+- customer: 100
+- customer: 321
+- customer: 999
+
+order_items:
+- order: 0
+  product: 5-6574-2801
+  amount: 1
+- order: 1
+  product: 8-7635-2345
+  amount: 2
+- order: 1
+  product: 1-1864-3541
+  amount: 1
+- order: 2
+  product: 9-7624-5276
+  amount: 1
+- order: 2
+  product: 5-6574-2801
+  amount: 1

@@ -10,9 +10,14 @@ class RelaRow(MutableMapping):
     index/key -style references to another containers.
     """
 
-    def __init__(self, table: RelaTable, data: Any) -> None:
+    __table: RelaTable
+    __data: Any
+    __index: int
+
+    def __init__(self, table: RelaTable, data: Any, index: int | None = None) -> None:
         """Wrap data object into a row."""
         self.__table = table
+        self.__index = index
         self.__data = data
 
     def __getattr__(self, column: column_name) -> Any:
@@ -89,3 +94,19 @@ class RelaRow(MutableMapping):
             super().__setattr__("_RelaRow__data", data)
 
         return self.__data
+
+    def index(self, index: int | None = None) -> int | None:
+        """
+        Getter/setter for row index.
+        (This is only used when table has no primary key.)
+        """
+        if index is not None:
+            super().__setattr__("_RelaRow__index", index)
+        return self.__index
+
+    def primary_key(self) -> Any:
+        """Getter for primary key value for this row."""
+        if self.__table.primary_key_column is None:
+            return self.index()
+        else:
+            return self.__data[self.__table.primary_key_column]
