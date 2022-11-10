@@ -1,0 +1,38 @@
+name: Upload release to PyPI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Set up python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+
+    - name: Install poetry
+      run: curl -sSL https://install.python-poetry.org | python3 -
+
+    - name: Configure poetry
+      run: |
+        poetry config virtualenvs.in-project true
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+
+    - name: Install Dependencies
+      run: poetry install
+
+    - name: Test
+      run: poetry run pytest
+
+    - name: Build
+      run: poetry build
+
+    - name: Publish
+      run: poetry publish
