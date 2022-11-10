@@ -7,8 +7,7 @@ from relatable.__imports import *
 
 class RelaTable(MutableSequence):
     """
-    A relational database -like table of rows.
-
+    ### A relational database -like table of rows
     Supports foreign key -style references to an another `RelaTable` and
     index/key -style references to another containers.
     """
@@ -26,29 +25,26 @@ class RelaTable(MutableSequence):
     ) -> None:
         """
         Create a new table.
-
         :param primary_key_column:
             Name of the primary key column. (`None` = Use row index as the primary key.)
         :param foreign_keys:
-            Dictionary of references from a local column value to an another Sequence.
-        :rows:
+            Dictionary of references from a local column value to an another container.
+        :param rows:
             An initial list of rows to be inserted.
-        :is_view:
-            True if this table is not the
         """
         self.primary_key_column = primary_key_column
         self.primary_key_to_index = dict()
         self.foreign_keys = dict(foreign_keys)
         self.__rows = list()
-        for row in rows:
-            self.append(row)
+        self.rows(rows)
 
     def __getitem__(self, primary_key: column_value) -> relatable.RelaRow:
         """
         Get row from the table (using primary key).
-
-        :param primary_key:  Primary key value of the row that we want.
-        :returns:  The actual row.
+        :param primary_key:
+            Primary key value of the row that we want.
+        :returns:
+            The actual row.
         """
         try:
             return self.__rows[self.primary_key_to_index[primary_key]]
@@ -66,8 +62,8 @@ class RelaTable(MutableSequence):
         """
         Remove row from the table.
         Removing from the middle is allowed only when using a primary key.
-
-        :param primary_key:  Primary key value of the row that we want to delete.
+        :param primary_key:
+            Primary key value of the row that we want to delete.
         """
         index = self.primary_key_to_index[primary_key]
         if self.primary_key_column is None and index != len(self) - 1:
@@ -99,8 +95,10 @@ class RelaTable(MutableSequence):
     def insert(self, index: int, data: Any) -> None:
         """
         Add object to the table as a new row.
-        :index:  List index position to insert the new row into.
-        :data:  The actual data object to be added.
+        :param index:
+            List index position to insert the new row into.
+        :param data:
+            The actual data object to be added.
         """
         len_rows = len(self.__rows)
 
@@ -149,7 +147,7 @@ class RelaTable(MutableSequence):
     ) -> list[relatable.RelaRow]:
         """
         Finds all the rows that fulfill a criteria.
-        :criteria:
+        :param criteria:
             A function that recieves a row and returns True if the criteria is fulfilled.
         :returns:
             A "view" containing all the matching rows.
@@ -177,6 +175,23 @@ class RelaTable(MutableSequence):
         self.__rows.clear()
         self.primary_key_to_index.clear()
 
-    def rows(self) -> list:
-        """Returns list of the current rows."""
+    def rows(self, rows: Sequence[Any] | None = None) -> list[relatable.RelaRow]:
+        """Getter/Setter for table rows.
+        :param rows: A list of data that will replace the table rows.
+        """
+        if rows:
+            if not isinstance(rows, Sequence):
+                raise TypeError(f"'{type(rows).__name__}' object is not iterable")
+            self.clear()
+            for row in rows:
+                if isinstance(row, relatable.RelaRow):
+                    row = row.data()
+                self.append(row)
         return self.__rows
+
+    def export(self) -> list[Any]:
+        """Export table row data as a regular list."""
+        out = list()
+        for row in self:
+            out.append(row.data())
+        return out

@@ -4,7 +4,7 @@ from relatable.__imports import *
 
 class RelaRow(MutableMapping):
     """
-    A thin database table row -like wrapper for data objects.
+    ### A thin database table row -like wrapper for data objects
     Supports foreign key -style references to an another `RelaTable` and
     index/key -style references to another containers.
     """
@@ -102,7 +102,7 @@ class RelaRow(MutableMapping):
     def data(self, data: Any = None) -> Any:
         """
         Get or set the data object of this row.
-        NOTE: The primary key stays the same!
+        #### NOTE: The primary key stays the same!
         """
         if data is not None:
             if self.__table.primary_key_column:
