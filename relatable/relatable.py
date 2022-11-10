@@ -82,7 +82,7 @@ class RelaTable(MutableSequence):
         return iter(self.__rows)
 
     def __repr__(self) -> str:
-        """A "true" string representation of the table rows."""
+        """A "true" string representation of the table row data."""
         return repr(self.__rows)
 
     def __str__(self) -> str:

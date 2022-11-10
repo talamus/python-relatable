@@ -75,6 +75,10 @@ class RelaRow(MutableMapping):
         return str(self.__data)
 
     def __raw(self) -> dict:
+        """
+        Recursively expanded representation of the row data.
+        (Same as __str__() but not turned into a string.)
+        """
         out = {}
         for column in self.__data:
             if isinstance(self[column], RelaRow):
@@ -84,7 +88,7 @@ class RelaRow(MutableMapping):
         return out
 
     def __str__(self, raw: bool = False) -> str | dict:
-        """Expanded representation of the row data."""
+        """Recursively expanded representation of the row data."""
         return str(self.__raw())
 
     def __len__(self) -> int:
