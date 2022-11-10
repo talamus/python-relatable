@@ -1,3 +1,6 @@
+# TODO: Remove when postponed annotations are the standard:
+from __future__ import annotations
+
 import relatable
 from relatable.__imports import *
 
@@ -13,7 +16,7 @@ class RelaTable(MutableSequence):
     primary_key_column: column_name | None
     primary_key_to_index: dict[Any, int]  # Primary key value -> self.__rows index
     foreign_keys: dict[column_name, Sequence | Mapping]
-    __rows: list[RelaRow]
+    __rows: list[relatable.RelaRow]
 
     def __init__(
         self,
@@ -40,7 +43,7 @@ class RelaTable(MutableSequence):
         for row in rows:
             self.append(row)
 
-    def __getitem__(self, primary_key: column_value) -> RelaRow:
+    def __getitem__(self, primary_key: column_value) -> relatable.RelaRow:
         """
         Get row from the table (using primary key).
 
@@ -141,7 +144,9 @@ class RelaTable(MutableSequence):
             if isinstance(row, relatable.RelaRow):
                 row.index(index)
 
-    def find(self, criteria: Callable[[RelaRow], bool]) -> list[RelaRow]:
+    def find(
+        self, criteria: Callable[[relatable.RelaRow], bool]
+    ) -> list[relatable.RelaRow]:
         """
         Finds all the rows that fulfill a criteria.
         :criteria:
@@ -155,7 +160,9 @@ class RelaTable(MutableSequence):
                 rows.append(row)
         return rows
 
-    def find_first(self, criteria: Callable[[RelaRow], bool]) -> RelaRow | None:
+    def find_first(
+        self, criteria: Callable[[relatable.RelaRow], bool]
+    ) -> relatable.RelaRow | None:
         """
         Return the first row that matches the criteria (or None if nothing matches).
         (A shorthand for self.find(...)[0]).
