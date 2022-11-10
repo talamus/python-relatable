@@ -48,7 +48,7 @@ def main():
     #   red
 
     print(pets[0].data())
-    # Prints out the actual row data:
+    # Prints out the non-expanded row data:
     #   {'name': 'cat', 'owner': 123}
 
 
