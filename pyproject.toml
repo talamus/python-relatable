@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "talamus-relatable"
+version = "1.0.0"
+description = "A relational database -like table of rows."
+authors = ["Tero Niemi <talamus@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/talamus/python-relatable"
+packages = [{include = "relatable"}]
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -15,6 +15,8 @@ def main():
             {"id": 456, "name": "Teppo", "color": 1},
         ],
     )
+
+    # Insert new user in the middle of the table
     persons.insert(1, {"id": 789, "name": "Seppo", "color": 2})
 
     pets = RelaTable(
@@ -41,9 +43,13 @@ def main():
     # Prints out:
     #   Seppo
 
-    print(pets[0].owner.name)
+    print(pets[0].owner.color)
     # Prints out:
-    #   Jaakko
+    #   red
+
+    print(pets[0].data())
+    # Prints out the actual row data:
+    #   {'name': 'cat', 'owner': 123}
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import relatable
-from relatable.__imports import *
 from relatable import RelaTable
+from relatable.__imports import *
 
 
 class RelaRow(MutableMapping):
@@ -12,7 +12,7 @@ class RelaRow(MutableMapping):
 
     __table: RelaTable
     __data: Any
-    __index: int
+    __index: int | None
 
     def __init__(self, table: RelaTable, data: Any, index: int | None = None) -> None:
         """Wrap data object into a row."""

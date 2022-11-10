@@ -1,6 +1,3 @@
-# TODO: Remove when postponed annotations are the standard:
-from __future__ import annotations
-
 import relatable
 from relatable.__imports import *
 
@@ -15,13 +12,13 @@ class RelaTable(MutableSequence):
 
     primary_key_column: column_name | None
     primary_key_to_index: dict[Any, int]  # Primary key value -> self.__rows index
-    foreign_keys: dict[column_name, Container]
+    foreign_keys: dict[column_name, Sequence | Mapping]
     __rows: list[RelaRow]
 
     def __init__(
         self,
         primary_key_column: column_name | None = None,
-        foreign_keys: dict[column_name, Container] = {},
+        foreign_keys: dict[column_name, Sequence | Mapping] = {},
         rows: Sequence = [],
     ) -> None:
         """
