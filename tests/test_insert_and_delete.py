@@ -1,5 +1,5 @@
 import pytest
-from .__fixtures import customers, products, orders, order_items
+from .__orders import customers, products, orders, order_items
 
 
 def test_simple_append(customers, products, orders, order_items):

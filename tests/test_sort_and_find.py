@@ -1,4 +1,4 @@
-from .__fixtures import customers, products, orders, order_items
+from .__orders import customers, products, orders, order_items
 
 
 def test_sorting_rows(customers, order_items):

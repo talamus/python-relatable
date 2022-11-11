@@ -1,0 +1,21 @@
+creatures:
+- type: dragon # index 0
+  lair: volcano
+  enemy: 1
+- type: necromancer # index 1
+  lair: crypt
+  enemy: 2
+- name: djinn # index 2
+  lair: desert
+  enemy: 3
+- name: nomad # index 3
+  lair: null
+  enemy: null
+
+lairs:
+- name: volcano
+  temperature: scorching
+- name: crypt
+  temperature: cold
+- name: desert
+  temperature: hot

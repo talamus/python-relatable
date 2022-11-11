@@ -1,4 +1,4 @@
-from .__fixtures import customers, products, orders, order_items
+from .__orders import customers, products, orders, order_items
 
 
 def test_that_fundamentals_have_not_changed(orders):
