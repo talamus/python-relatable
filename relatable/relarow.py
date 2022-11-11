@@ -1,3 +1,4 @@
+from typing import Iterable
 from relatable import RelaTable
 from relatable.__imports import *
 
@@ -24,7 +25,11 @@ class RelaRow(MutableMapping):
         Return the column value.
         If column is a foreign key, return the value from the another table.
         """
-        value = self.__data[column]
+        if hasattr(self.__data, column):
+            value = getattr(self.__data, column)
+        else:
+            value = self.__data[column]
+
         if column in self.__table.foreign_keys:
             return self.__table.foreign_keys[column][value]
         else:
@@ -74,22 +79,29 @@ class RelaRow(MutableMapping):
         """A "true" representation of the row data."""
         return str(self.__data)
 
-    def __raw(self) -> dict:
+    def blueprint(self) -> dict:
         """
-        Recursively expanded representation of the row data.
-        (Same as __str__() but not turned into a string.)
+        Return a recursively expanded object representation of the row data.
+        NOTE: A cyclic references will throw a RecursionError
         """
+        if isinstance(self.__data, Iterable):
+            data = self.__data
+        elif hasattr(self.__data, "__dict__"):
+            data = self.__data.__dict__
+        else:
+            return self.__data
+
         out = {}
-        for column in self.__data:
+        for column in data:
             if isinstance(self[column], RelaRow):
-                out[column] = self[column].__raw()
+                out[column] = self[column].blueprint()
             else:
                 out[column] = self[column]
         return out
 
     def __str__(self, raw: bool = False) -> str:
-        """Recursively expanded representation of the row data."""
-        return str(self.__raw())
+        """Recursively expanded string representation of the row data."""
+        return str(self.blueprint())
 
     def __len__(self) -> int:
         """Return the number of columns."""

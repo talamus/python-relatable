@@ -38,14 +38,16 @@ class RelaTable(MutableSequence):
         self.__rows = list()
         self.rows(rows)
 
-    def __getitem__(self, primary_key: column_value) -> relatable.RelaRow:
+    def __getitem__(self, primary_key: column_value) -> relatable.RelaRow | None:
         """
         Get row from the table (using primary key).
         :param primary_key:
             Primary key value of the row that we want.
         :returns:
-            The actual row.
+            The actual row (or None if reference is empty).
         """
+        if primary_key is None:
+            return None
         try:
             return self.__rows[self.primary_key_to_index[primary_key]]
         except KeyError:
@@ -83,14 +85,18 @@ class RelaTable(MutableSequence):
 
     def __str__(self) -> str:
         """A string representation of table rows with all the foreign keys expanded."""
-        out = []
-        for row in self.__rows:
-            out.append(str(row))
-        return f"[{', '.join(out)}]"
+        return str(self.blueprint())
 
     def __len__(self) -> int:
         """Number of rows in the table."""
         return len(self.__rows)
+
+    def blueprint(self) -> list[Any]:
+        """An object representation of table rows with all the foreign keys expanded."""
+        model = []
+        for row in self.__rows:
+            model.append(row.blueprint())
+        return model
 
     def insert(self, index: int, data: Any) -> None:
         """
@@ -176,8 +182,12 @@ class RelaTable(MutableSequence):
         self.primary_key_to_index.clear()
 
     def rows(self, rows: Sequence[Any] | None = None) -> list[relatable.RelaRow]:
-        """Getter/Setter for table rows.
-        :param rows: A list of data that will replace the table rows.
+        """
+        Getter/Setter for table rows.
+        :param rows:
+            A list of data that will replace the table rows.
+        :returns:
+            A list of RelaRows
         """
         if rows:
             if not isinstance(rows, Sequence):
