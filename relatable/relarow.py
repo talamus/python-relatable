@@ -1,4 +1,3 @@
-from typing import Iterable
 from relatable import RelaTable
 from relatable.__imports import *
 
