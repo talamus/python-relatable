@@ -13,7 +13,7 @@ class RelaTable(MutableSequence):
     """
 
     primary_key_column: column_name | None
-    primary_key_to_index: dict[Any, int]  # Primary key value -> self.__rows index
+    primary_key_to_index: dict[column_value, int]  # Primary key value -> self.__rows index
     foreign_keys: dict[column_name, Sequence | Mapping]
     __rows: list[relatable.RelaRow]
 

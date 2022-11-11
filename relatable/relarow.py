@@ -19,7 +19,7 @@ class RelaRow(MutableMapping):
         self.__index = index
         self.__data = data
 
-    def __getattr__(self, column: column_name) -> Any:
+    def __getattr__(self, column: column_name) -> column_value:
         """
         Return the column value.
         If column is a foreign key, return the value from the another table.
@@ -34,7 +34,7 @@ class RelaRow(MutableMapping):
         else:
             return value
 
-    def __setattr__(self, column: column_name, value: Any) -> None:
+    def __setattr__(self, column: column_name, value: column_value) -> None:
         """Set only columns that already exist in the data object."""
 
         # When data is not yet present, the object is not ready to use
@@ -58,14 +58,14 @@ class RelaRow(MutableMapping):
             f"Add or remove columns by directly manipulating the data object."
         )
 
-    def __getitem__(self, column: column_name) -> Any:
+    def __getitem__(self, column: column_name) -> column_value:
         """
         Return the column value.
         If column is a foreign key, return the value from the another table.
         """
         return self.__getattr__(column)
 
-    def __setitem__(self, column: column_name, value: Any) -> None:
+    def __setitem__(self, column: column_name, value: column_value) -> None:
         """Set only columns that already exist in the data object."""
         return self.__setattr__(column, value)
 
