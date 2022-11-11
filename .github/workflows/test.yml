@@ -1,7 +1,8 @@
-name: Run tests when pushing / merging to master
+name: Run tests when pushing to any branch, or handling a pull request to master
 
 on:
   push:
+  pull_request:
     branches:
     - master
 
@@ -27,25 +28,22 @@ jobs:
       id: full-python-version
       run: echo version=$(python -c 'import sys; print("-".join(map(str, list(sys.version_info))))') >> $GITHUB_OUTPUT
 
-    - name: Install poetry
-      run: curl -sSL https://install.python-poetry.org | python3 -
-
-    - name: Configure poetry
-      run: poetry config virtualenvs.in-project true
-
     - name: Set up cache
       uses: actions/cache@v3
       id: cache
       with:
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}
 
-    - name: Install Dependencies
-      run: poetry install
+    - name: Install poetry
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry install
 
-    - name: Ensure cache is up to date
+    - name: Ensure dependencies are up to date
       if: steps.cache.outputs.cache-hit == 'true'
       run: poetry update
 
-    - name: Test
+    - name: Run tests
       run: poetry run pytest

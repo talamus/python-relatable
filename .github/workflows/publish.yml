@@ -20,15 +20,13 @@ jobs:
     - name: Install poetry
       run: curl -sSL https://install.python-poetry.org | python3 -
 
-    - name: Configure poetry
-      run: |
-        poetry config virtualenvs.in-project true
-        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+    - name: Set PyPI token
+      run: poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
 
-    - name: Install Dependencies
+    - name: Install dependencies
       run: poetry install
 
-    - name: Test
+    - name: Run tests
       run: poetry run pytest
 
     - name: Build
